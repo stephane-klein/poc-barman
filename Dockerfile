@@ -12,6 +12,7 @@ RUN bash -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg ma
         barman \
         barman-cli \
         barman-cli-cloud \
+        gosu \
     && rm -rf /var/lib/apt/lists/*
 
 ADD entrypoint.sh /entrypoint.sh

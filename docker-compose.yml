@@ -13,10 +13,17 @@ services:
       BARMAN_POSTGRES_STREAMING_USER: streaming_barman
       BARMAN_POSTGRES_STREAMING_PASSWORD: password
     command: >
-      postgres -c wal_level=replica
+      postgres
+      -c wal_level=replica
+      -c summarize_wal=on
+      -c checkpoint_timeout='60s'
+      -c max_wal_size='100MB'
+#      -c archive_mode=on
+#      -c archive_command='/bin/true'
     volumes:
       - ./init-barman.sh:/docker-entrypoint-initdb.d/init-barman.sh
       - postgres1:/var/lib/postgresql/data/
+#      - barman:/var/lib/barman/
     healthcheck:
       test: ["CMD", "sh", "-c", "pg_isready -U $$POSTGRES_USER -h $$(hostname -i)"]
       interval: 10s
@@ -31,8 +38,8 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-    volumes:
-      - postgres2:/var/lib/postgresql/data/
+#    volumes:
+#      - postgres2:/var/lib/postgresql/data/
     healthcheck:
       test: ["CMD", "sh", "-c", "pg_isready -U $$POSTGRES_USER -h $$(hostname -i)"]
       interval: 10s
@@ -43,10 +50,17 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      POSTGRES_HOST: postgres1
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      BARMAN_POSTGRES_HOST: postgres1
+      BARMAN_POSTGRES_DB: postgres
+      BARMAN_POSTGRES_USER: barman
+      BARMAN_POSTGRES_PASSWORD: password
+      BARMAN_POSTGRES_STREAMING_USER: streaming_barman
+      BARMAN_POSTGRES_STREAMING_PASSWORD: password
+    volumes:
+      - barman:/var/lib/barman/
+    depends_on:
+      postgres1:
+        condition: service_healthy
 
   minio:
     image: minio/minio:RELEASE.2023-09-30T07-02-29Z
@@ -66,5 +80,7 @@ volumes:
      name: ${COMPOSE_PROJECT_NAME}_postgres1
   postgres2:
      name: ${COMPOSE_PROJECT_NAME}_postgres2
+  barman:
+     name: ${COMPOSE_PROJECT_NAME}_barman
   minio:
      name: ${COMPOSE_PROJECT_NAME}_minio

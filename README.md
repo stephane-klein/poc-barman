@@ -47,6 +47,13 @@ minio
 postgres1
 ```
 
+```
+$ docker compose up -d barman
+$ ./scripts/seed.sh
+$ ./scripts/generate_dummy_rows.sh
+```
+
+
 ## Teardown
 
 ```sh
