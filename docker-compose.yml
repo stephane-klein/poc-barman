@@ -18,12 +18,9 @@ services:
       -c summarize_wal=on
       -c checkpoint_timeout='60s'
       -c max_wal_size='100MB'
-#      -c archive_mode=on
-#      -c archive_command='/bin/true'
     volumes:
       - ./init-barman.sh:/docker-entrypoint-initdb.d/init-barman.sh
       - postgres1:/var/lib/postgresql/data/
-#      - barman:/var/lib/barman/
     healthcheck:
       test: ["CMD", "sh", "-c", "pg_isready -U $$POSTGRES_USER -h $$(hostname -i)"]
       interval: 10s
@@ -38,8 +35,6 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-#    volumes:
-#      - postgres2:/var/lib/postgresql/data/
     healthcheck:
       test: ["CMD", "sh", "-c", "pg_isready -U $$POSTGRES_USER -h $$(hostname -i)"]
       interval: 10s
