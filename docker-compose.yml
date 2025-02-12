@@ -1,0 +1,53 @@
+services:
+  postgres1:
+    image: postgres:17
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres1:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD", "sh", "-c", "pg_isready -U $$POSTGRES_USER -h $$(hostname -i)"]
+      interval: 10s
+      start_period: 30s
+
+  postgres2:
+    image: postgres:17
+    restart: unless-stopped
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres2:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD", "sh", "-c", "pg_isready -U $$POSTGRES_USER -h $$(hostname -i)"]
+      interval: 10s
+      start_period: 30s
+
+  minio:
+    image: minio/minio:RELEASE.2023-09-30T07-02-29Z
+    ports:
+    - "443:443"
+    - "9001:9001"
+    environment:
+      MINIO_REGION: us-east-1
+      MINIO_DOMAIN: minio
+    command: server /data/ --certs-dir /certs --address ':443' --console-address ':9001'
+    volumes:
+      - minio:/volumes/minio/data/:/data/
+      - ./minio/certs/:/certs/
+
+volumes:
+  postgres1:
+     name: ${COMPOSE_PROJECT_NAME}_postgres1
+  postgres2:
+     name: ${COMPOSE_PROJECT_NAME}_postgres2
+  minio:
+     name: ${COMPOSE_PROJECT_NAME}_minio
