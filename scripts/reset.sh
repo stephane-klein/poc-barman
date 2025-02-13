@@ -14,11 +14,11 @@ echo "Execute barman check until all checks pass..."
 
 while true; do
     echo -e "\n[$(date '+%Y-%m-%d %H:%M:%S')] Running barman checks..."
-    docker compose exec barman gosu barman barman switch-wal all
+    docker compose exec barman gosu barman barman switch-wal postgres1
     docker compose exec barman gosu barman barman cron
     
     # Capture the output of barman check all
-    if ! output=$(docker compose exec barman gosu barman barman check all 2>&1); then
+    if ! output=$(docker compose exec barman gosu barman barman check postgres1 2>&1); then
         echo "An error occurred during check"
     fi
     
@@ -33,11 +33,11 @@ while true; do
     sleep 4
 done
 
-echo "Execute: ls -lha /var/lib/barman/streaming-server/streaming/"
-docker compose exec barman ls -lha /var/lib/barman/streaming-server/streaming/
+echo "Execute: ls -lha /var/lib/barman/postgres1/streaming/"
+docker compose exec barman ls -lha /var/lib/barman/postgres1/streaming/
 
-echo "Execute: barman backup streaming-server --immediate-checkpoint"
-docker compose exec barman gosu barman barman backup streaming-server --immediate-checkpoint
+echo "Execute: barman backup postgres1 --immediate-checkpoint"
+docker compose exec barman gosu barman barman backup postgres1 --immediate-checkpoint
 
-echo "Execute: ls /var/lib/barman/streaming-server/base/ -lha"
-docker compose exec barman ls /var/lib/barman/streaming-server/base/ -lha
+echo "Execute: ls /var/lib/barman/postgres1/base/ -lha"
+docker compose exec barman ls /var/lib/barman/postgres1/base/ -lha
