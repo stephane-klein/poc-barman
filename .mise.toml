@@ -1,5 +1,2 @@
-[tools]
-mc="2023-12-23T08-47-21Z"
-
 [env]
 _.source = { value = "./.envrc", tools = true }

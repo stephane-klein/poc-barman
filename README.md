@@ -27,6 +27,12 @@ However, I still haven't managed to restore an incremental backup.
 
 ## Environment preparation
 
+If you don't use [Mise](https://mise.jdx.dev/) or [direnv](https://direnv.net/), you need to execute the following command before running `docker compose`:
+
+```
+$ source .envrc
+```
+
 ```sh
 $ mise install
 $ docker compose build
