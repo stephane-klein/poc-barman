@@ -33,8 +33,11 @@ while true; do
     sleep 4
 done
 
+echo "Execute: ls -lha /var/lib/barman/streaming-server/streaming/"
 docker compose exec barman ls -lha /var/lib/barman/streaming-server/streaming/
 
+echo "Execute: barman backup streaming-server --immediate-checkpoint"
 docker compose exec barman gosu barman barman backup streaming-server --immediate-checkpoint
 
-docker compose exec barman ls /var/lib/barman/streaming-server//base/ -lha
+echo "Execute: ls /var/lib/barman/streaming-server/base/ -lha"
+docker compose exec barman ls /var/lib/barman/streaming-server/base/ -lha
