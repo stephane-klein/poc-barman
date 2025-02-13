@@ -132,6 +132,38 @@ Backup 20250213T103723:
     Retention Policy     : not enforced
     Previous Backup      : - (this is the oldest base backup)
     Next Backup          : - (this is the latest base backup)
+barman@5ca8384b0def:/$ exit
+```
+
+Now I want to restore the first backup to the `postgres2` container.
+strange trick: before performing the restoration in the shared volume between the `barman` and `postgres2` containers, I need to grant write permissions on the directory to the `barman` user.
+After restoring the files, I change these permissions again to give them to user `999` which is the `postgres` user of the `postgres2` container.
+
+```
+$ export BACKUP_ID=$(docker compose exec barman gosu barman barman list-backups postgres1 --minimal 2>/dev/null | head -n1)
+$ docker compose exec barman sh -c "chown -R barman:barman /var/lib/postgres2/data/; barman restore postgres1 ${BACKUP_ID} /var/lib/postgres2/data/; chown -R 999:999 /var/lib/postgres2/data/"
+```
+
+```sh
+$ docker compose up -d postgres2 --wait
+$ ./scripts/enter-in-pg2.sh
+
+postgres=# select * from dummy;
+ id |             text
+----+-------------------------------
+  1 | 2025-02-13 11:25:54.518072+00
+  2 | 2025-02-13 11:25:54.518072+00
+  3 | 2025-02-13 11:25:54.518072+00
+  4 | 2025-02-13 11:25:54.518072+00
+  5 | 2025-02-13 11:25:54.518072+00
+  6 | 2025-02-13 11:25:54.518072+00
+  7 | 2025-02-13 11:25:54.518072+00
+  8 | 2025-02-13 11:25:54.518072+00
+  9 | 2025-02-13 11:25:54.518072+00
+ 10 | 2025-02-13 11:25:54.518072+00
+(10 rows)
+
+postgres=# exit
 ```
 
 ## Teardown

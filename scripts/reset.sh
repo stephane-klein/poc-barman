@@ -50,3 +50,10 @@ BACKUP_ID=$(docker compose exec barman gosu barman barman list-backups postgres1
 docker compose exec barman gosu barman barman show-backup postgres1 $BACKUP_ID
 
 docker compose exec barman sh -c "chown -R barman:barman /var/lib/postgres2/data/; barman restore postgres1 ${BACKUP_ID} /var/lib/postgres2/data/; chown -R 999:999 /var/lib/postgres2/data/"
+
+docker compose up postgres2 --wait
+
+docker compose exec -T postgres2 sh -c "cat << EOF | psql -U \$POSTGRES_USER \$POSTGRES_DB
+select * from dummy order by id
+\q
+EOF"
