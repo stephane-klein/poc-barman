@@ -50,7 +50,7 @@ $ docker compose up -d postgres1 barman --wait
 
 ```sh
 $ ./scripts/seed.sh
-$ ./scripts/generate_dummy_rows.sh
+$ ./scripts/generate_dummy_rows_in_postgres1.sh
 ```
 
 Direct *barman* interaction:

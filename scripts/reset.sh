@@ -51,7 +51,7 @@ docker compose exec barman sh -c "chown -R barman:barman /var/lib/postgres2/data
 
 docker compose up postgres2 --wait
 
-./scripts/display-dummy-rows.sh
+./scripts/postgres2-display-dummy-rows.sh
 
 docker compose down postgres2
 
@@ -67,5 +67,5 @@ docker compose exec barman sh -c "rm -rf /var/lib/postgres2/data/*; rm -rf /var/
 #
 docker compose up postgres2 # <== error here
 
-# ./scripts/display-dummy-rows.sh
+# ./scripts/postgres2-display-dummy-rows.sh
 
