@@ -40,7 +40,8 @@ $ docker compose build
 
 ## Start or restart the playground test scenario
 
-You can execute this test scenario manually or automatically by executing `./scripts/reset.sh`:
+You can execute this test scenario manually or automatically by executing `./scripts/reset.sh` (see [screencast](https://www.youtube.com/watch?v=d2Iqw8KppCY)):
+
 
 ```sh
 $ docker compose down -v
