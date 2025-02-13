@@ -41,3 +41,10 @@ docker compose exec barman gosu barman barman backup postgres1 --immediate-check
 
 echo "Execute: ls /var/lib/barman/postgres1/base/ -lha"
 docker compose exec barman ls /var/lib/barman/postgres1/base/ -lha
+
+echo "Execute: barman list-backups postgres1"
+docker compose exec barman gosu barman barman list-backups postgres1
+
+BACKUP_ID=$(docker compose exec barman gosu barman barman list-backups postgres1 --minimal 2>/dev/null | head -n1)
+
+docker compose exec barman gosu barman barman show-backup postgres1 $BACKUP_ID
