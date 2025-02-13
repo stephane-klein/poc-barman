@@ -91,6 +91,47 @@ drwxr-xr-x 1 barman barman 60 Feb 13 10:00 .
 drwxr-xr-x 1 barman barman 88 Feb 13 09:59 ..
 drwxr-xr-x 1 barman barman 30 Feb 13 09:59 20250213T095917
 
+barman@5ca8384b0def:/$ barman list-backups postgres1
+postgres1 20250213T103723 - F - Thu Feb 13 10:37:24 2025 - Size: 22.3 MiB - WAL Size: 0 B - WAITING_FOR_WALS
+
+barman@5ca8384b0def:/$ barman show-backup postgres1 20250213T103723
+Backup 20250213T103723:
+  Server Name            : postgres1
+  System Id              : 7470850836021661734
+  Status                 : WAITING_FOR_WALS
+  PostgreSQL Version     : 170002
+  PGDATA directory       : /var/lib/postgresql/data
+  Estimated Cluster Size : 22.3 MiB
+
+  Server information:
+    Checksums            : off
+    WAL summarizer       : on
+
+  Base backup information:
+    Backup Method        : postgres
+    Backup Type          : full
+    Backup Size          : 22.3 MiB
+    Timeline             : 1
+    Begin WAL            : 000000010000000000000005
+    End WAL              : 000000010000000000000006
+    Begin time           : 2025-02-13 10:37:23.292254+00:00
+    End time             : 2025-02-13 10:37:24.799652+00:00
+    Copy time            : 1 second
+    Estimated throughput : 14.9 MiB/s
+    Begin Offset         : 216
+    End Offset           : 0
+    Begin LSN            : 0/50000D8
+    End LSN              : 0/6000000
+
+  WAL information:
+    No of files          : 0
+    Disk usage           : 0 B
+    Last available       : None
+
+  Catalog information:
+    Retention Policy     : not enforced
+    Previous Backup      : - (this is the oldest base backup)
+    Next Backup          : - (this is the latest base backup)
 ```
 
 ## Teardown

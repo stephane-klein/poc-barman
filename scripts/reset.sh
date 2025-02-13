@@ -46,5 +46,7 @@ echo "Execute: barman list-backups postgres1"
 docker compose exec barman gosu barman barman list-backups postgres1
 
 BACKUP_ID=$(docker compose exec barman gosu barman barman list-backups postgres1 --minimal 2>/dev/null | head -n1)
-
+ 
 docker compose exec barman gosu barman barman show-backup postgres1 $BACKUP_ID
+
+docker compose exec barman sh -c "chown -R barman:barman /var/lib/postgres2/data/; barman restore postgres1 ${BACKUP_ID} /var/lib/postgres2/data/; chown -R 999:999 /var/lib/postgres2/data/"

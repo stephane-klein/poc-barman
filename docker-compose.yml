@@ -35,6 +35,19 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
+      BARMAN_POSTGRES_USER: barman
+      BARMAN_POSTGRES_PASSWORD: password
+      BARMAN_POSTGRES_STREAMING_USER: streaming_barman
+      BARMAN_POSTGRES_STREAMING_PASSWORD: password
+    command: >
+      postgres
+      -c wal_level=replica
+      -c summarize_wal=on
+      -c checkpoint_timeout='60s'
+      -c max_wal_size='100MB'
+    volumes:
+      - ./init-barman.sh:/docker-entrypoint-initdb.d/init-barman.sh
+      - postgres2:/var/lib/postgresql/data/
     healthcheck:
       test: ["CMD", "sh", "-c", "pg_isready -U $$POSTGRES_USER -h $$(hostname -i)"]
       interval: 10s
@@ -53,6 +66,7 @@ services:
       BARMAN_POSTGRES_STREAMING_PASSWORD: password
     volumes:
       - barman:/var/lib/barman/
+      - postgres2:/var/lib/postgres2/data/
     depends_on:
       postgres1:
         condition: service_healthy
