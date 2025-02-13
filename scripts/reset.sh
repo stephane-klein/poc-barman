@@ -59,6 +59,8 @@ docker compose down postgres2
 
 sleep 2
 
+docker compose exec barman gosu barman barman switch-wal postgres1
+docker compose exec barman gosu barman barman cron
 docker compose exec barman gosu barman barman backup postgres1 --immediate-checkpoint --incremental last
 
 docker compose exec barman sh -c "rm -rf /var/lib/postgres2/data/*; rm -rf /var/lib/postgres2/data/.* 2>/dev/null; chown -R barman:barman /var/lib/postgres2/data/; barman restore postgres1 last /var/lib/postgres2/data/ --no-get-wal --recovery-staging-path=/var/lib/barman/tmp/; chown -R 999:999 /var/lib/postgres2/data/; ls -lha /var/lib/postgres2/data/"

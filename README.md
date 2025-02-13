@@ -2,15 +2,17 @@
 
 ## Prerequisites
 
-- [mise](https://mise.jdx.dev/()
+- [mise](https://mise.jdx.dev/)
 - [Docker Engine](https://docs.docker.com/engine/) (tested with `24.0.6`)
-- [pgcli](https://www.pgcli.com/)
-- `psql` (More info about `psql` [brew package](https://stackoverflow.com/a/49689589/261061))
 
 ## Services versions
 
 - PostgreSQL 17
 - [barman 3.12.1](https://github.com/EnterpriseDB/barman/releases/tag/release/3.12.1)
+
+## Barman backup method
+
+- 
 
 ## Environment preparation
 
