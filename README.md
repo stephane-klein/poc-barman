@@ -20,10 +20,10 @@ However, I still haven't managed to restore an incremental backup.
 ## Barman backup method
 
 - [streaming backups method](https://docs.pgbarman.org/release/3.12.1/user_guide/concepts.html#streaming-backups): `backup_method = postgres` based on `pg_basebackup`
-- barman configuration, see: https://github.com/stephane-klein/poc-barman/blob/entrypoint.sh#L21
+- barman configuration, see: https://github.com/stephane-klein/poc-barman/blob/main/docker-compose.yml#L15
 - postgresql 17 configuration, see:
-  - https://github.com/stephane-klein/poc-barman/blob/docker-compose.yml#L15
-  - and https://github.com/stephane-klein/poc-barman/blob/init-barman.sh#L1
+  - https://github.com/stephane-klein/poc-barman/blob/main/docker-compose.yml#L15
+  - and https://github.com/stephane-klein/poc-barman/blob/main/init-barman.sh#L1
 
 ## Environment preparation
 
