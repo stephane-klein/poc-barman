@@ -38,5 +38,4 @@ if [ -n "$1" ]; then
     exit 0
 fi
 
-gosu barman barman cron
 sleep infinity

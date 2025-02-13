@@ -12,15 +12,17 @@
 - PostgreSQL 17
 - [barman 3.12.1](https://github.com/EnterpriseDB/barman/releases/tag/release/3.12.1)
 
-## Getting start
+## Environment preparation
 
 ```sh
 $ mise install
+$ docker compose build
 ```
 
-I start PostgreSQL database and barman services:
+## Start or restart the playground test scenario
 
 ```sh
+$ docker compose down -v
 $ docker compose up -d postgres1 barman --wait
 ```
 
@@ -32,9 +34,10 @@ $ ./scripts/generate_dummy_rows.sh
 ```sh
 $ docker compose exec barman bash
 root@5482aa5f8420:/# su barman
-barman@5482aa5f8420:/$ barman check streaming-server
+barman@5482aa5f8420:/$ barman switch-wal
+barman@5482aa5f8420:/$ barman cron
+barman@eaba483d9b3b:/$ barman check streaming-server
 Server streaming-server:
-        WAL archive: FAILED (please make sure WAL shipping is setup)
         PostgreSQL: OK
         superuser or standard user with backup privileges: OK
         PostgreSQL streaming: OK
