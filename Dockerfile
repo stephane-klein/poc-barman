@@ -13,7 +13,9 @@ RUN bash -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg ma
         barman-cli \
         barman-cli-cloud \
         gosu \
+    && ln -sf /usr/lib/postgresql/17/bin/pg_combinebackup /usr/bin/pg_combinebackup \
     && rm -rf /var/lib/apt/lists/*
+
 
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod u+x /entrypoint.sh

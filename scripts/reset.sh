@@ -45,15 +45,27 @@ docker compose exec barman ls /var/lib/barman/postgres1/base/ -lha
 echo "Execute: barman list-backups postgres1"
 docker compose exec barman gosu barman barman list-backups postgres1
 
-BACKUP_ID=$(docker compose exec barman gosu barman barman list-backups postgres1 --minimal 2>/dev/null | head -n1)
+# BACKUP_ID=$(docker compose exec barman gosu barman barman list-backups postgres1 --minimal 2>/dev/null | head -n1)
  
-docker compose exec barman gosu barman barman show-backup postgres1 $BACKUP_ID
+docker compose exec barman gosu barman barman show-backup postgres1 last
 
-docker compose exec barman sh -c "chown -R barman:barman /var/lib/postgres2/data/; barman restore postgres1 ${BACKUP_ID} /var/lib/postgres2/data/; chown -R 999:999 /var/lib/postgres2/data/"
+docker compose exec barman sh -c "chown -R barman:barman /var/lib/postgres2/data/; barman restore postgres1 last /var/lib/postgres2/data/; chown -R 999:999 /var/lib/postgres2/data/"
 
 docker compose up postgres2 --wait
 
-docker compose exec -T postgres2 sh -c "cat << EOF | psql -U \$POSTGRES_USER \$POSTGRES_DB
-select * from dummy order by id
-\q
-EOF"
+./scripts/display-dummy-rows.sh
+
+docker compose down postgres2
+
+./scripts/generate_dummy_rows.sh
+
+sleep 2
+
+docker compose exec barman gosu barman barman backup postgres1 --immediate-checkpoint --incremental last
+
+# docker compose exec barman sh -c "rm -rf /var/lib/postgres2/data/*; rm -rf /var/lib/postgres2/data/.* 2>/dev/null; chown -R barman:barman /var/lib/postgres2/data/; barman restore postgres1 last /var/lib/postgres2/data/ --recovery-staging-path=/var/lib/barman/tmp/; chown -R 999:999 /var/lib/postgres2/data/"
+#
+# docker compose up postgres2 --wait
+#
+# ./scripts/display-dummy-rows.sh
+#
