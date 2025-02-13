@@ -34,3 +34,7 @@ while true; do
 done
 
 docker compose exec barman ls -lha /var/lib/barman/streaming-server/streaming/
+
+docker compose exec barman gosu barman barman backup streaming-server --immediate-checkpoint
+
+docker compose exec barman ls /var/lib/barman/streaming-server//base/ -lha
