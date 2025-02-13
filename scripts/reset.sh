@@ -7,7 +7,7 @@ docker compose down -v
 docker compose up -d postgres1 barman --wait
 
 ./scripts/seed.sh
-./scripts/generate_dummy_rows.sh
+./scripts/generate_dummy_rows_in_postgres1.sh
 
 set +e
 echo "Execute barman check until all checks pass..."
@@ -55,7 +55,7 @@ docker compose up postgres2 --wait
 
 docker compose down postgres2
 
-./scripts/generate_dummy_rows.sh
+./scripts/generate_dummy_rows_in_postgres1.sh
 
 sleep 2
 
